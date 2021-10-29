@@ -23,15 +23,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       
-    - name: Clone source code
+    - name: Prepare Env
       run: |
         git clone --depth=1 https://github.com/lixiangyang1994/linux-amlogic.git /opt/linux-amlogic
-        mkdir -p /opt/images/ 
+        mkdir -p /opt/images/
+        mkdir -p /opt/toolchain
+        wget https://publishing-ie-linaro-org.s3.amazonaws.com/releases/archive/14.08/components/toolchain/binaries/gcc-linaro-aarch64-linux-gnu-4.9-2014.08_linux.tar.xz
+        tar -xvf gcc-linaro-aarch64-linux-gnu-4.9-2014.08_linux.tar.xz -C /opt/toolchain
         
     - name: Build Firmware
       run: |
         cd /opt/linux-amlogic
         make meson64_defconfig
+        export ARCH=arm64
+        export CROSS_COMPILE=/opt/toolchain/gcc-linaro-aarch64-linux-gnu-4.9-2014.08_linux/bin/aarch64-linux-gnu-
         make -j
         sudo cp arch/arm64/boot/Image /opt/images/
         
