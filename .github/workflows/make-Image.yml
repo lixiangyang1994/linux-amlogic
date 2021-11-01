@@ -34,9 +34,9 @@ jobs:
     - name: Build Firmware
       run: |
         cd /opt/linux-amlogic
-        make meson64_defconfig
         export ARCH=arm64
-        export CROSS_COMPILE=/opt/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-linux-gnu-
+        export CROSS_COMPILE=/opt/toolchain/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu-
+        make meson64_defconfig
         make -j
         sudo cp arch/arm64/boot/Image /opt/images/
         
